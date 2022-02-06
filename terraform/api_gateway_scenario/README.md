@@ -20,7 +20,10 @@ In this repository, using Terraform, you can deploy a sample application with AL
 
 1. Clone the repository.
 
-2. terraform apply
+2. run terrform initizalize and apply commands
+
+terrform init
+terraform apply
 
 5. You can access the API using the output value `deployment_invoke_url`
 
