@@ -44,30 +44,6 @@ resource "aws_api_gateway_integration" "alb_integration" {
 }
 
 
-
-resource "aws_security_group" "allow-http-traffic" {
-  name        = "allow_http_traffic"
-  description = "Allow http traffic"
-  vpc_id      = aws_vpc.mydemovpc.id
-
-  ingress {
-    description = "Http traffic"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-
-
 data "template_file" "api_gateway_assume_role_policy" {
   template = file("./policies/api_gateway_assume_role.json")
 }
