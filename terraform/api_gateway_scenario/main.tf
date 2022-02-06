@@ -1,7 +1,7 @@
-variable "REGION" { default="us-east-1" }
-variable "PROFILE" { default="default" }
+variable "region" { default="us-east-1" }
+variable "profile" { default="default" }
 
 provider "aws" {
-  profile = var.PROFILE
-  region = var.REGION
+  profile = var.profile
+  region = var.region
 }
