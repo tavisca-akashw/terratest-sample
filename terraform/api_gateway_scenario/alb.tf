@@ -1,4 +1,4 @@
-variable "ALB_DELETION_PROTECTION" { default=true }
+variable "ALB_DELETION_PROTECTION" { default=false }
 
 resource "aws_lb" "load-balancer" {
   name               = "my-demo-load-balancer"

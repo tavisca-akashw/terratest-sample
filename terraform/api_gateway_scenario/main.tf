@@ -1,4 +1,4 @@
-variable "REGION" { default="us-east-1" }
+variable "REGION" { default="us-west-1" }
 variable "PROFILE" { default="default" }
 
 provider "aws" {
