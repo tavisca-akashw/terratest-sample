@@ -1,3 +1,10 @@
+data "aws_caller_identity" "current" {}
+
+locals {
+    account_id = data.aws_caller_identity.current.account_id
+}
+
+
 resource "aws_api_gateway_rest_api" "api" {
   name = "terratest_api"
 }
@@ -44,41 +51,9 @@ resource "aws_api_gateway_integration" "alb_integration" {
 }
 
 
-
-resource "aws_security_group" "allow-http-traffic" {
-  name        = "allow_http_traffic"
-  description = "Allow http traffic"
-  vpc_id      = aws_vpc.mydemovpc.id
-
-  ingress {
-    description = "Http traffic"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-
-
-data "template_file" "api_gateway_assume_role_policy" {
-  template = file("./policies/api_gateway_assume_role.json")
-}
-
-resource "aws_iam_role" "api-gateway-assume-role-policy" {
-  assume_role_policy = data.template_file.api_gateway_assume_role_policy.rendered
-}
-
 resource "aws_iam_role_policy_attachment" "api-gateway-policy-role-attachment" {
   policy_arn =  "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  role = aws_iam_role.api-gateway-assume-role-policy.name
+  role = aws_iam_role.lambda-assume-role-policy.name
 }
 
 
@@ -89,7 +64,7 @@ resource "aws_lambda_permission" "with_api_gateway" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.arn
   principal     = "apigateway.amazonaws.com"
-  source_arn    = aws_lb_target_group.lambda-target-group.arn
+  source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*"
 }
 
 
