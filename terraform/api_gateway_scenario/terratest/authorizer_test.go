@@ -2,6 +2,7 @@ package terratest
 import (
    "log"
    "fmt"
+   //"bytes"
    terra_test "github.com/gruntwork-io/terratest/modules/testing"
    testing "testing"
    "github.com/aws/aws-sdk-go/aws"
@@ -29,10 +30,10 @@ func TestApiGateway(t *testing.T) {
 
 
 func GetAPIGwAuthorizers(t terra_test.TestingT, awsRegion string, apiId string) map[string]string {
-        StageName, err := GetAPIGwAuthorizersE(t, awsRegion, apiId)
+        ApiAuthorizers, err := GetAPIGwAuthorizersE(t, awsRegion, apiId)
         require.NoError(t, err)
 
-        return StageName
+        return ApiAuthorizers
 }
 
 
