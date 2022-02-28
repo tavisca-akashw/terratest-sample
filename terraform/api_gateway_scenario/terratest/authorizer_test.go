@@ -1,7 +1,8 @@
 package terratest
 import (
-   //"bytes"
+   "strings"
    "fmt"
+   "strconv"
    "github.com/stretchr/testify/assert"
    terra_test "github.com/gruntwork-io/terratest/modules/testing"
    testing "testing"
@@ -22,17 +23,18 @@ func TestApiGateway(t *testing.T) {
     apiId :=  terraform.Output(t, terraformOptions, "api_id")
     apiAuthorizer := GetAPIGwAuthorizers(t, awsRegion, apiId)
     apiAuthorizert := fmt.Sprint(apiAuthorizer)
-    assert.Equal(t, "TestAuthorizer" , apiAuthorizert)
+    apiAuthorizerUri := fmt.Sprintf(strconv.FormatBool(strings.Contains(apiAuthorizert, YOUR_AUTH_LAMBDA_FUNCTION)))
+    assert.Equal(t, "true" , apiAuthorizerUri)
 }
 
 
 
 
 func GetAPIGwAuthorizers(t terra_test.TestingT, awsRegion string, apiId string) []string {
-        ApiAuthorizers, err := GetAPIGwAuthorizersE(t, awsRegion, apiId)
+        ApiAuthorizersUri, err := GetAPIGwAuthorizersE(t, awsRegion, apiId)
         require.NoError(t, err)
 
-        return ApiAuthorizers
+        return ApiAuthorizersUri
 }
 
 
@@ -50,12 +52,12 @@ func GetAPIGwAuthorizersE(t terra_test.TestingT, awsRegion string, apiId string)
                 return nil, err
         }
 
-        authorizers_list := []string{}
+        authorizersUri := []string{}
         for _, authorizer := range out.Items {
 
-              authorizers_list = append(authorizers_list, *authorizer.Name)
+              authorizersUri = append(authorizersUri, *authorizer.AuthorizerUri)
         }
-        return authorizers_list, err
+        return authorizersUri, err
 }
 
 
