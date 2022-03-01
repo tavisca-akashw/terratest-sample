@@ -7,7 +7,7 @@ import (
 
 func TestEc2SshKey(t *testing.T) {
     terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-                TerraformDir: "../terraform",
+                TerraformDir: "../",
         })
     defer terraform.Destroy(t, terraformOptions)
     terraform.InitAndApply(t, terraformOptions)
