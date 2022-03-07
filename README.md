@@ -16,8 +16,8 @@ once you are in the terratest folder run below commands
 First install modules you imported in the test using 
 
 
-**go mod init instance_ssh_test.go
-go mod tidy**
+**go mod init instance_ssh_test.go**
+**go mod tidy**
 
 
  And finally execute test 
