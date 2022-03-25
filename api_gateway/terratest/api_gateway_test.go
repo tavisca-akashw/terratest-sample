@@ -16,12 +16,12 @@ func TestApiGateway(t *testing.T) {
     terraform.InitAndApply(t, terraformOptions)
     stageUrl := terraform.Output(t, terraformOptions,"deployment_invoke_url")
     time.Sleep(30 * time.Second)
-    statusCode := CurlRequest(t, stageUrl)
+    statusCode := DoGetRequest(t, stageUrl)
     assert.Equal(t, 200 , statusCode)
 }
 
 
-func CurlRequest(t *testing.T, api string) int{
+func DoGetRequest(t *testing.T, api string) int{
    resp, err := http.Get(api)
    if err != nil {
       log.Fatalln(err)
