@@ -19,7 +19,7 @@ func TestApiGateway(t *testing.T) {
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../",
 	})
-	//defer terraform.Destroy(t, terraformOptions)
+	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
 	apiId := terraform.Output(t, terraformOptions, "api_id")
 	apiAuthorizer := GetAPIGwAuthorizers(t, awsRegion, apiId)
